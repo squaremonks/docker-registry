@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+    registry:
+        image: 'registry'
+        environment:
+            REGISTRY_AUTH: htpasswd
+            REGISTRY_AUTH_HTPASSWD_REALM: Registry
+            REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.password
+            REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+            REGISTRY_HTTP_SECRET: ''
+            REGISTRY_HTTP_TLS_KEY: '/certs/domain.key'
+            REGISTRY_HTTP_TLS_CERTIFICATE: '/certs/domain.crt'
+        volumes:
+            - '/var/run/docker.sock:/var/run/docker.sock'
+            - './certs:/certs'
+            - './auth:/auth'
+            - './data:/data'
+        ports:
+            - '443:5000'
+        restart: 'always'
